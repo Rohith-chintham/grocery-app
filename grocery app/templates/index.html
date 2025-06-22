@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<form action="/add" method="POST" class="add-form">
+    <input type="text" name="name" placeholder="Item name" required>
+    <input type="number" name="quantity" placeholder="Qty" required>
+    <input type="text" name="unit" placeholder="Unit (kg, pcs...)" required>
+    <button type="submit">Add Item</button>
+</form>
+
+<table>
+    <tr>
+        <th>Item</th>
+        <th>Quantity</th>
+        <th>Actions</th>
+    </tr>
+    {% for item in items %}
+    <tr class="{% if item[2] <= 2 %}low-stock{% endif %}">
+        <td>{{ item[1] }}</td>
+        <td>
+            <form action="/update/{{ item[0] }}" method="POST">
+                <input type="number" name="quantity" value="{{ item[2] }}" required>
+                <button type="submit">Update</button>
+            </form>
+        </td>
+        <td><a href="/delete/{{ item[0] }}">Delete</a></td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
